@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'jobprogress'
-copyright = u'2010, Hardcoded Software Inc.'
+copyright = u'2011, Hardcoded Software Inc.'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
