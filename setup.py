@@ -11,7 +11,7 @@ LONG_DESC = open('README', 'rt').read() + '\n\n' + open('CHANGES', 'rt').read()
 
 setup(
     name='jobprogress',
-    version='1.0.0',
+    version='1.0.1',
     author='Hardcoded Software',
     author_email='hsoft@hardcoded.net',
     packages=['jobprogress'],
