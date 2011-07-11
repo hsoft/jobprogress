@@ -1,6 +1,5 @@
 # Created By: Virgil Dupras
 # Created On: 2004/12/20
-# $Id
 # Copyright 2011 Hardcoded Software (http://www.hardcoded.net)
 
 # This software is licensed under the "BSD" License as described in the "LICENSE" file, 
@@ -62,10 +61,13 @@ class Job:
         
         The parameter is a int in the 0-100 range.
         """
-        passed_progress = self._passed_jobs * self._currmax
-        current_progress = self._current_job * self._progress
-        total_progress = self._jobcount * self._currmax
-        progress = ((passed_progress + current_progress) * 100) // total_progress
+        if self._current_job:
+            passed_progress = self._passed_jobs * self._currmax
+            current_progress = self._current_job * self._progress
+            total_progress = self._jobcount * self._currmax
+            progress = ((passed_progress + current_progress) * 100) // total_progress
+        else:
+            progress = -1 # indeterminate
         # It's possible that callback doesn't support a desc arg
         result = self._callback(progress, desc) if desc else self._callback(progress)
         if not result:
@@ -74,6 +76,9 @@ class Job:
     #---Public
     def add_progress(self, progress=1, desc=''):
         self.set_progress(self._progress + progress, desc)
+    
+    def check_if_cancelled(self):
+        self._do_update('')
     
     def iter_with_progress(self, sequence, desc_format=None, every=1):
         ''' Iterate through sequence while automatically adding progress.
@@ -134,6 +139,9 @@ class NullJob:
         pass
     
     def add_progress(self, *args, **kwargs):
+        pass
+    
+    def check_if_cancelled(self):
         pass
     
     def iter_with_progress(self, sequence, *args, **kwargs):

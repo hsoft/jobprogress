@@ -180,3 +180,10 @@ class TCJob(unittest.TestCase):
                 self.assertEqual(self.lastdesc, 'Processed %d items of 5' % (i - 1))
         self.assertEqual(self.lastdesc, 'Processed 5 items of 5')
     
+    def test_check_if_cancelled(self):
+        # check_if_cancelled() checks if the job is cancelled and raises JobCancelled if it is.
+        j = job.Job(1, self.callback)
+        j.check_if_cancelled() # nothing happens
+        self.assertEqual(self.lastprogress, -1) # When no job have been started, we send a progress of -1
+        self.cancel = True
+        self.assertRaises(job.JobCancelled, j.check_if_cancelled)

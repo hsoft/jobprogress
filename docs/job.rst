@@ -34,7 +34,13 @@ The ``Job`` class
     .. method:: add_progress(progress=1, desc='')
 
         Add ``progress`` units of progress to the current work unit. Send description ``desc`` to the callback.
-
+    
+    .. method:: check_if_cancelled()
+    
+        Raises JobCancelled if the user has cancelled the job like add_progress would normally do,
+        but it doesn't change the current progress. Use this if you're doing work with an
+        indeterminate amount of work units and want to make the task cancellable.
+    
     .. method:: iter_with_progress(sequence, desc_format=None, every=1)
 
         Yields each element of ``sequence`` by first calling :meth:``start_job`` on self with progress units equal to the length of ``sequence``. At each yields, :meth:``add_progress`` is called. If ``desc_format`` is not None, a new description is generated from the format at every ``every`` element. For example, such a format could be "Processed %d elements out of %d". If you have a lot of elements in ``sequence``, it might be a good idea to make ``every`` higher so that description formatting doesn't affect your process performance too much.
