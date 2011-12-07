@@ -55,13 +55,8 @@ class ThreadedJobPerformer:
         Call this after the caller of run_threaded detected that self._job_running returned to False
         """
         if self._last_error is not None:
-            type, value, tb = self._last_error
-            try:
-                raise type(value).with_traceback(tb)
-            except TypeError:
-                # In weird cases, with_traceback takes more than 1 argument. I have no idea why, so
-                # I'm raising this meta error to eventually find out.
-                raise TypeError("A meta-crash happen when trying to reraise an error of type {}".format(type.__name__))
+            _, value, tb = self._last_error
+            raise value.with_traceback(tb)
     
     def _update_progress(self, newprogress, newdesc=''):
         self.last_progress = newprogress
