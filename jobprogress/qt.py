@@ -33,7 +33,6 @@ class Progress(QProgressDialog, performer.ThreadedJobPerformer):
             self.close()
             if not self.job_cancelled:
                 self.finished.emit(self._jobid)
-            self._reraise_if_error()
             return
         if self.wasCanceled():
             self.job_cancelled = True
