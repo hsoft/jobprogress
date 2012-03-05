@@ -23,7 +23,7 @@ class ThreadedJobPerformer:
     self._run_threaded(self.some_work_func, (arg1, arg2, j))
     """
     _job_running = False
-    _last_error = None
+    last_error = None
     
     #--- Protected
     def create_job(self):
@@ -38,25 +38,25 @@ class ThreadedJobPerformer:
         target = args[0]
         args = tuple(args[1:])
         self._job_running = True
-        self._last_error = None
+        self.last_error = None
         try:
             target(*args)
         except JobCancelled:
             pass
-        except Exception:
-            self._last_error = sys.exc_info()
+        except Exception as e:
+            self.last_error = e
+            self.last_traceback = sys.exc_info()[2]
         finally:
             self._job_running = False
             self.last_progress = None
     
-    def _reraise_if_error(self):
+    def reraise_if_error(self):
         """Reraises the error that happened in the thread if any.
         
         Call this after the caller of run_threaded detected that self._job_running returned to False
         """
-        if self._last_error is not None:
-            _, value, tb = self._last_error
-            raise value.with_traceback(tb)
+        if self.last_error is not None:
+            raise self.last_error.with_traceback(self.last_traceback)
     
     def _update_progress(self, newprogress, newdesc=''):
         self.last_progress = newprogress
