@@ -1,6 +1,11 @@
 Changes
 =======
 
+Version 1.0.4 -- 2012/03/20
+---------------------------
+
+* Made ``ThreadedJobPerformer.reraise_if_error()`` public and stopped calling it automatically.
+
 Version 1.0.3 -- 2011/12/07
 ---------------------------
 
